@@ -160,7 +160,7 @@ class QuotesManager(private val activity: Activity) {
             val quoteJson = JSONObject()
             quoteJson.put("author", author)
             quoteJson.put("quote", quote)
-            quoteJson.put("category", SimpleDateFormat("MMMM d, yyyy hh:mma", Locale.ENGLISH).format(Date()))
+            quoteJson.put("category", SimpleDateFormat("MMMM dd, yyyy hh:mma", Locale.US).format(Date()))
             jsonArray.put(quoteJson)
             val currentFavorites = jsonArray.toString()
             preferences[favoritesKey] = currentFavorites

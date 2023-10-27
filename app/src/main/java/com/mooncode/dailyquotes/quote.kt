@@ -131,7 +131,7 @@ class quote : Fragment() {
                 override fun onGlobalLayout() {
                     //Log.d("QuoteCategories", "MaxSz: $maxHeight, Height: ${txtQuote.height} ${htQuote.height}, TextSz: ${txtQuote.textSize}")
 
-                    if (txtQuote.height < maxHeight - 200) {
+                    if (txtQuote.height < maxHeight - 300) {
                         textSz += 2F
                         txtQuote.textSize = textSz
                     } else {

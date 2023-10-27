@@ -5,30 +5,10 @@
     android:id="@+id/main_nav"
     app:startDestination="@id/quote_categories">
     <fragment
-        android:id="@+id/favorites"
-        android:name="com.mooncode.dailyquotes.Favorites"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favorites2_to_quote_categories"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:destination="@id/quote_categories" />
-    </fragment>
-    <fragment
         android:id="@+id/quote_categories"
         android:name="com.mooncode.dailyquotes.quote_categories"
         android:label="fragment_quote_categories"
         tools:layout="@layout/fragment_quote_categories" >
-        <action
-            android:id="@+id/action_quote_categories_to_favorites2"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:destination="@id/favorites" />
         <action
             android:id="@+id/action_quote_categories_to_quote"
             app:enterAnim="@anim/slide_in_right"
