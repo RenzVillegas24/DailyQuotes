@@ -148,6 +148,8 @@ class QuotesManager(private val activity: Activity) {
     suspend fun addToFavorites(quote: String, author: String){
         val favoritesKey = stringPreferencesKey("favorites")
         Log.d("QuotesManager", "Adding quote: $quote, $author")
+        Toast.makeText(activity, "Quote added to the favorite lists.", Toast.LENGTH_SHORT).show()
+
         dataStore.edit { preferences ->
             val favoritesJson = preferences[favoritesKey]
             val jsonArray = if (favoritesJson != null) JSONArray(favoritesJson) else JSONArray()
@@ -174,6 +176,7 @@ class QuotesManager(private val activity: Activity) {
     suspend fun removeFromFavorites(category: String, quote: String, author: String){
         val favoritesKey = stringPreferencesKey("favorites")
         Log.d("QuotesManager", "Removing quote: $quote, $author")
+        Toast.makeText(activity, "Quote removed from the favorite lists.", Toast.LENGTH_SHORT).show()
         dataStore.edit { preferences ->
             val favoritesJson = preferences[favoritesKey]
             val jsonArray = if (favoritesJson != null) JSONArray(favoritesJson) else JSONArray()
