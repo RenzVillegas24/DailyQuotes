@@ -1,15 +1,15 @@
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -20,7 +20,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
-import kotlin.math.log
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "quotes")
@@ -112,19 +111,18 @@ class QuotesManager(private val activity: Activity) {
     }
 
     private fun showErrorDialog(message: String?) {
-        /*
-        MaterialAlertDialogBuilder(activity)
-            .setTitle("Error")
-            .setMessage("API request failed with error: $message")
-            .setNegativeButton("Leave") { dialog, which ->
-                activity.finishAndRemoveTask()
-            }
-            .setPositiveButton("Retry") { dialog, which ->
-                dialog.dismiss()
-            }
-            .show()
-
-         */
+        activity.runOnUiThread {
+            MaterialAlertDialogBuilder(activity)
+                .setTitle("Error")
+                .setMessage("API request failed with error: $message")
+                .setNegativeButton("Leave") { dialog, which ->
+                    activity.finishAndRemoveTask()
+                }
+                .setPositiveButton("Retry") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     suspend fun getQuotesByCategory(category: String): List<Quote> {
@@ -218,14 +216,18 @@ class QuotesManager(private val activity: Activity) {
     }
 
     suspend fun getQuoteOfTheDay(): Quote? {
-        val jsonQuote = dataStore.data.first()[stringPreferencesKey("quote_of_the_day")]
-        Log.d("QuotesManager", "Collected quote of the day data: $jsonQuote")
-        val jsonArray = JSONArray(jsonQuote).getJSONObject(0)
-        if (jsonArray != null ) {
-            val author = jsonArray.getString("author")
-            val quote = jsonArray.getString("quote")
-            val category = jsonArray.getString("category")
-            return Quote(category, author, quote)
+        try {
+            val jsonQuote = dataStore.data.first()[stringPreferencesKey("quote_of_the_day")]
+            Log.d("QuotesManager", "Collected quote of the day data: $jsonQuote")
+            val jsonArray = JSONArray(jsonQuote).getJSONObject(0)
+            if (jsonArray != null ) {
+                val author = jsonArray.getString("author")
+                val quote = jsonArray.getString("quote")
+                val category = jsonArray.getString("category")
+                return Quote(category, author, quote)
+            }
+        } catch (e: Exception) {
+            showErrorDialog(e.message)
         }
         return null
 
