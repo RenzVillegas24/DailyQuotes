@@ -226,6 +226,8 @@ class quote : Fragment() {
         }
 
         btnFav.setOnClickListener {
+            if (quotes.isEmpty())
+                return@setOnClickListener
             curI = Math.floorMod(--curI,quotes.size)
             Log.d("QuoteCategories", "curI: $curI, SZ: ${quotes.size}")
             if (isFav) {
