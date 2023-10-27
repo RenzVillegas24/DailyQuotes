@@ -20,6 +20,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "quotes")
@@ -159,7 +160,7 @@ class QuotesManager(private val activity: Activity) {
             val quoteJson = JSONObject()
             quoteJson.put("author", author)
             quoteJson.put("quote", quote)
-            quoteJson.put("category", SimpleDateFormat("yyyy-MM-dd").format(Date()))
+            quoteJson.put("category", SimpleDateFormat("MMMM d, yyyy hh:mma", Locale.ENGLISH).format(Date()))
             jsonArray.put(quoteJson)
             val currentFavorites = jsonArray.toString()
             preferences[favoritesKey] = currentFavorites
